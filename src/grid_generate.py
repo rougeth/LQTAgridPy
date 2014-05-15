@@ -1,6 +1,6 @@
 from intertools import izip
 
-class geraGrid():
+class gridGenerate():
     """O construtor dessa classe lê um arquivo com a lista dos arquivos gro e top 
        correspondentes aos resultados das dinâmicas para cada molécula
        e gera o Grid para o conjunto de moléculas"""
@@ -26,8 +26,8 @@ class geraGrid():
                 fileNameGro = lineGro
                 fileNameItp = lineItp
                 # GMC = GeraMatrizCoordenadas(fileNameGro, fileNameItp)
-                # GMC.geraGrid(x,y,z,atp,dx,dy,dz)
-                # output.format(GMC.salvarGrids());
+                # GMC.gridGenerate(x,y,z,atp,dx,dy,dz)
+                # output.format(GMC.saveGrids());
                 # output.format("\n");
     
     def pairwise(iterable):
