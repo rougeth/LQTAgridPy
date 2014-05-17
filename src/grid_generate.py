@@ -25,8 +25,8 @@ class gridGenerate():
             for lineGro, lineItp in pairwise(self.dataFile):
                 fileNameGro = lineGro
                 fileNameItp = lineItp
-                # GMC = GeraMatrizCoordenadas(fileNameGro, fileNameItp)
-                # GMC.gridGenerate(x,y,z,atp,dx,dy,dz)
+                GMC = matrixGenerate(fileNameGro, fileNameItp)
+                GMC.gridGenerate(x,y,z,atp,dx,dy,dz)
                 # output.format(GMC.saveGrids());
                 # output.format("\n");
     

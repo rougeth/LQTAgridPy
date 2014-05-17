@@ -7,7 +7,27 @@ class matrixGenerate():
         # tiposdeatomos(arquivoitp);
         # carregaConstantes();
         # carregaAP();
-        # determinaConstantes();
+        determineConstants()
+
+
+    def determineConstants():
+        for i in xrange(0,self.n):
+            index = search(self.typeConstants, self.types[i])
+            self.c6[i] = self.constantc6[index]
+            self.c12[i] = self.constantc12[index]
+
+    def search(vector, element):
+        nelem = len(vector)
+
+        for i in xrange(0,nelem):
+            if element == vector[i]:
+                return i
+
+        return -1
+
+    def distance(r1, r2):
+        d = math.sqrt(math.pow((r1[0] - r2[0]), 2) + math.pow((r1[1] - r2[1]) ,2) + math.pow((r1[2] - r2[2]), 2))
+        return d
         
     def gridGenerate(I, J, K, atp, dx, dy, dz):
         f = 138.935485
