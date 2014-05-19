@@ -5,7 +5,7 @@ class gridGenerate():
        correspondentes aos resultados das dinâmicas para cada molécula
        e gera o Grid para o conjunto de moléculas"""
 
-    def __init__(self, x, y, z, dx, dy, dz, atp, nameFile):
+    def __init__(self, x, y, z, dx, dy, dz, atp, fileName):
         self.output = ""
 
         n = len(atp)
@@ -19,7 +19,7 @@ class gridGenerate():
         self.output = self.output + "\n"
 
             
-            with open(nameFile) as f:
+            with open(fileName) as f:
                 self.dataFile = f.readlines()
 
             for lineGro, lineItp in pairwise(self.dataFile):

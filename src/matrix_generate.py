@@ -3,13 +3,57 @@ import math
 class matrixGenerate():
 
     def __init__(self, fileGro, fileItp):
-        # determinaX(arquivogro);
-        # tiposdeatomos(arquivoitp);
-        # carregaConstantes();
-        # carregaAP();
+        setX(fileGro)
+        # tiposdeatomos(arquivoitp)
+        # carregaConstantes()
+        # carregaAP()
         determineConstants()
 
+    def setX(fileName):
+        with open(fileName) as f:
+            input = f.readlines()
 
+        currentLine = 1
+        line = input[currentLine]
+        line = input[currentLine]
+        x = []
+        y = []
+        z = []
+        # StringTokenizer tokens;
+        # self.n = input.nextInt();
+        # self.types = new String[n];
+        self.cargas = []
+        self.c6 = []
+        self.c12 = []
+
+        while True:
+            for i in xrange(0,self.n):
+                line = input[++currentLine]
+                
+                # tokens = new StringTokenizer(linha)
+                # tokens.nextToken()
+                # tokens.nextToken()
+                # tokens.nextToken()
+                # x.add(Double.parseDouble(tokens.nextToken()))
+                # y.add(Double.parseDouble(tokens.nextToken()))
+                # z.add(Double.parseDouble(tokens.nextToken()))
+
+            ++currentLine
+            if input[currentLine + 1] != None:
+                ++currentLine
+            else
+                break;
+
+            ++currentLine 
+
+        self.m = len(x)
+        self.X = [[0 for x in xrange(m)] for x in xrange(3)]
+
+        for i in xrange(0,self.m):
+            # self.X[i][0] = (x.get(i))*10
+            # self.X[i][1] = (y.get(i))*10
+            # self.X[i][2] = (z.get(i))*10
+                
     def determineConstants():
         for i in xrange(0,self.n):
             index = search(self.typeConstants, self.types[i])
