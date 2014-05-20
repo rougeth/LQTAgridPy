@@ -4,9 +4,9 @@ class matrixGenerate():
 
     def __init__(self, fileGro, fileItp):
         setX(fileGro)
-        # tiposdeatomos(arquivoitp)
+        atomsTypes(fileItp)
         # carregaConstantes()
-        # carregaAP()
+        loadAP()
         determineConstants()
 
     def setX(fileName):
@@ -22,7 +22,7 @@ class matrixGenerate():
         # StringTokenizer tokens;
         # self.n = input.nextInt();
         # self.types = new String[n];
-        self.cargas = []
+        self.cargos = []
         self.c6 = []
         self.c12 = []
 
@@ -53,7 +53,61 @@ class matrixGenerate():
             # self.X[i][0] = (x.get(i))*10
             # self.X[i][1] = (y.get(i))*10
             # self.X[i][2] = (z.get(i))*10
-                
+
+    def atomsTypes(fileName):
+        with open(fileName) as f:
+            input = f.readlines()
+
+        currentLine = 22
+        line = input[currentLine]
+
+        # StringTokenizer tokens;
+        # tokens = new StringTokenizer(linha);
+        # String token = tokens.nextToken();
+        
+        while token != "atoms":
+            line = input[++currentLine]
+
+            if line != "":
+                # tokens = new StringTokenizer(line);
+
+                # if tokens.nextToken().equals("["):
+                #     token = tokens.nextToken();
+
+        currentLine = currentLine + 2
+        line = input[currentLine]
+
+        for i in xrange(0,self.n):
+            # tokens = new StringTokenizer(linha);
+            # tokens.nextToken();
+            # self.types[i] = tokens.nextToken();
+
+            for j in xrange(0,4):
+                # tokens.nextToken();
+                # self.cargos[i] = Double.parseDouble(tokens.nextToken());
+                line = input[++currentLine]
+
+    def loadAP():
+        with open("AtomProva.atp") as f:
+            input = f.readlines()
+
+        # StringTokenizer tokens;
+        # nap = input.nextInt();
+        self.ap = []
+
+        currentLine = 3
+        line = input[currentLine]
+
+        while input[currentLine+1] != None:
+            i = 0
+            line = input[++currentLine]
+            # tokens = new StringTokenizer(linha);
+            # self.ap[i] = tokens.nextToken();
+            # self.cargosap[i] = Double.parseDouble(tokens.nextToken());
+            # self.c6ap[i] = Double.parseDouble(tokens.nextToken());
+            # self.c12ap[i] = Double.parseDouble(tokens.nextToken());
+            ++i
+
     def determineConstants():
         for i in xrange(0,self.n):
             index = search(self.typeConstants, self.types[i])
@@ -82,7 +136,7 @@ class matrixGenerate():
 
         for h in xrange(0, natp):
             elem = search(self.ap, atp[h])
-            q1 = self.cargasap[elem]
+            q1 = self.cargosap[elem]
             c6a = self.c6ap[elem]
             c12a = self.c12ap[elem]
 
