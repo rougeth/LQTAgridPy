@@ -5,7 +5,7 @@ class matrixGenerate():
     def __init__(self, fileGro, fileItp):
         setX(fileGro)
         atomsTypes(fileItp)
-        # carregaConstantes()
+        loadConstants()
         loadAP()
         determineConstants()
 
@@ -16,27 +16,26 @@ class matrixGenerate():
         currentLine = 1
         line = input[currentLine]
         line = input[currentLine]
+
         x = []
         y = []
         z = []
-        # StringTokenizer tokens;
         # self.n = input.nextInt();
-        # self.types = new String[n];
+        self.types = []
         self.cargos = []
         self.c6 = []
         self.c12 = []
+
+        currentToken = 3
 
         while True:
             for i in xrange(0,self.n):
                 line = input[++currentLine]
                 
-                # tokens = new StringTokenizer(linha)
-                # tokens.nextToken()
-                # tokens.nextToken()
-                # tokens.nextToken()
-                # x.add(Double.parseDouble(tokens.nextToken()))
-                # y.add(Double.parseDouble(tokens.nextToken()))
-                # z.add(Double.parseDouble(tokens.nextToken()))
+                tokens = line.split(' ')
+                x.insert(i, tokens[++currentToken])
+                y.insert(i, tokens[++currentToken])
+                z.insert(i, tokens[++currentToken])
 
             ++currentLine
             if input[currentLine + 1] != None:
@@ -50,63 +49,95 @@ class matrixGenerate():
         self.X = [[0 for x in xrange(m)] for x in xrange(3)]
 
         for i in xrange(0,self.m):
-            # self.X[i][0] = (x.get(i))*10
-            # self.X[i][1] = (y.get(i))*10
-            # self.X[i][2] = (z.get(i))*10
+            self.X[i][0] = (x.[i]) * 10
+            self.X[i][1] = (y.[i]) * 10
+            self.X[i][2] = (z.[i]) * 10
 
     def atomsTypes(fileName):
         with open(fileName) as f:
             input = f.readlines()
 
         currentLine = 22
+        currentToken = 2
         line = input[currentLine]
 
-        # StringTokenizer tokens;
-        # tokens = new StringTokenizer(linha);
-        # String token = tokens.nextToken();
+        tokens = line.split(' ')
+        token = tokens[currentToken]
         
         while token != "atoms":
             line = input[++currentLine]
 
             if line != "":
-                # tokens = new StringTokenizer(line);
+                tokens = line.split(' ')
 
-                # if tokens.nextToken().equals("["):
-                #     token = tokens.nextToken();
+                if tokens[currentToken] == "[":
+                    token = tokens[++currentToken]
 
         currentLine = currentLine + 2
         line = input[currentLine]
 
         for i in xrange(0,self.n):
-            # tokens = new StringTokenizer(linha);
-            # tokens.nextToken();
-            # self.types[i] = tokens.nextToken();
+            tokens = line.split(' ')
+            currentToken = 3
+            self.types[i] = tokens[currentToken]
 
             for j in xrange(0,4):
-                # tokens.nextToken();
-                # self.cargos[i] = Double.parseDouble(tokens.nextToken());
+                ++currentToken
+                self.cargos[i] = tokens[++currentToken]
                 line = input[++currentLine]
+
+
+
+    def loadConstants():
+        with open(fileName) as f:
+            input = f.readlines()
+
+        ttype = []
+        sigma = []
+        epsilon = []
+        currentLine = 2
+        currentToken = 1
+        line = input[currentLine]
+        index = 1
+
+        while input[currentLine+1] != None:
+            line = input[++currentLine]
+            tokens = line.split(' ')
+            ttype.insert(index, tokens[++currentToken])
+            currentToken = currentToken +3
+            sigma.insert(index, tokens[++currentToken]);
+            epsilon.insert(index, tokens[++currentToken]);
+            ++index
+
+        nttypes = len(ttype)
+        self.typeConstants = []
+        self.constantc6 = []
+        self.constantc12 = []
+
+        for i in xrange(0,nttypes):
+            self.typeConstants.insert(i, ttype[i])
+            self.constantc6.insert(i, 4 * epsilon[i] * math.pow(sigma[i], 6))
+            self.constantc12.insert(i, 4 * epsilon[i] * math.pow(sigma[i], 12))
 
     def loadAP():
         with open("AtomProva.atp") as f:
             input = f.readlines()
 
-        # StringTokenizer tokens;
-        # nap = input.nextInt();
         self.ap = []
 
         currentLine = 3
+        currentToken = 1
         line = input[currentLine]
 
         while input[currentLine+1] != None:
-            i = 0
+            index = 0
             line = input[++currentLine]
-            # tokens = new StringTokenizer(linha);
-            # self.ap[i] = tokens.nextToken();
-            # self.cargosap[i] = Double.parseDouble(tokens.nextToken());
-            # self.c6ap[i] = Double.parseDouble(tokens.nextToken());
-            # self.c12ap[i] = Double.parseDouble(tokens.nextToken());
-            ++i
+            tokens = line.split(' ')
+            self.ap[index] = tokens[++currentToken]
+            self.cargosap[index] = tokens[++currentToken]
+            self.c6ap[index] = tokens[++currentToken]
+            self.c12ap[index] = tokens[++currentToken]
+            ++index
 
     def determineConstants():
         for i in xrange(0,self.n):
