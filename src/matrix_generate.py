@@ -3,62 +3,66 @@ import math
 class matrixGenerate():
 
     def __init__(self, fileGro, fileItp):
-        setX(fileGro)
-        atomsTypes(fileItp)
-        loadConstants()
-        loadAP()
-        determineConstants()
+        self.setX(fileGro)
+        self.atomsTypes(fileItp)
+        self.loadConstants()
+        self.loadAP()
+        self.determineConstants()
 
-    def setX(fileName):
+    def setX(self, fileName):
         with open(fileName) as f:
             input = f.readlines()
 
         currentLine = 1
         line = input[currentLine]
-        line = input[currentLine]
 
         x = []
         y = []
         z = []
-        # self.n = input.nextInt();
+        self.n = int(input[currentLine])
         self.types = []
         self.cargos = []
         self.c6 = []
         self.c12 = []
 
-        currentToken = 3
 
         while True:
-            for i in xrange(0,self.n):
-                line = input[++currentLine]
-                
+            for i in range(0,self.n):
+                currentToken = 3
+                currentLine += 1
+                line = input[currentLine]
+
                 tokens = line.split(' ')
-                x.insert(i, tokens[++currentToken])
-                y.insert(i, tokens[++currentToken])
-                z.insert(i, tokens[++currentToken])
+                x.insert(i, tokens[currentToken])
+                currentToken += 1
+                y.insert(i, tokens[currentToken])
+                currentToken += 1
+                z.insert(i, tokens[currentToken])
 
-            ++currentLine
-            if input[currentLine + 1] != None:
-                ++currentLine
-            else
-                break;
+            currentLine += 1
+            if len(input) > currentLine + 1:
+                currentLine += 1
+            else:
+                break
 
-            ++currentLine 
+            currentLine += 1
 
         self.m = len(x)
-        self.X = [[0 for x in xrange(m)] for x in xrange(3)]
+        print self.m
+        self.X = [[0 for self.X in xrange(3)] for self.X in xrange(self.m)]
 
         for i in xrange(0,self.m):
-            self.X[i][0] = (x.[i]) * 10
-            self.X[i][1] = (y.[i]) * 10
-            self.X[i][2] = (z.[i]) * 10
+            print i
+            self.X[i][0] = x[i] * 10
+            self.X[i][1] = y[i] * 10
+            self.X[i][2] = z[i] * 10
 
-    def atomsTypes(fileName):
+    def atomsTypes(self, fileName):
         with open(fileName) as f:
             input = f.readlines()
 
         currentLine = 22
-        currentToken = 2
+        currentToken = 1
         line = input[currentLine]
 
         tokens = line.split(' ')
@@ -88,7 +92,7 @@ class matrixGenerate():
 
 
 
-    def loadConstants():
+    def loadConstants(self):
         with open(fileName) as f:
             input = f.readlines()
 
@@ -96,7 +100,7 @@ class matrixGenerate():
         sigma = []
         epsilon = []
         currentLine = 2
-        currentToken = 1
+        currentToken = 0
         line = input[currentLine]
         index = 1
 
@@ -119,14 +123,14 @@ class matrixGenerate():
             self.constantc6.insert(i, 4 * epsilon[i] * math.pow(sigma[i], 6))
             self.constantc12.insert(i, 4 * epsilon[i] * math.pow(sigma[i], 12))
 
-    def loadAP():
+    def loadAP(self):
         with open("AtomProva.atp") as f:
             input = f.readlines()
 
         self.ap = []
 
-        currentLine = 3
-        currentToken = 1
+        currentLine = 2
+        currentToken = 0
         line = input[currentLine]
 
         while input[currentLine+1] != None:
@@ -139,13 +143,13 @@ class matrixGenerate():
             self.c12ap[index] = tokens[++currentToken]
             ++index
 
-    def determineConstants():
+    def determineConstants(self):
         for i in xrange(0,self.n):
             index = search(self.typeConstants, self.types[i])
             self.c6[i] = self.constantc6[index]
             self.c12[i] = self.constantc12[index]
 
-    def search(vector, element):
+    def search(self, vector, element):
         nelem = len(vector)
 
         for i in xrange(0,nelem):
@@ -154,11 +158,11 @@ class matrixGenerate():
 
         return -1
 
-    def distance(r1, r2):
+    def distance(self, r1, r2):
         d = math.sqrt(math.pow((r1[0] - r2[0]), 2) + math.pow((r1[1] - r2[1]) ,2) + math.pow((r1[2] - r2[2]), 2))
         return d
         
-    def gridGenerate(I, J, K, atp, dx, dy, dz):
+    def gridGenerate(self, I, J, K, atp, dx, dy, dz):
         f = 138.935485
         nframes = self.m / self.n
         natp = len(atp)
@@ -196,7 +200,7 @@ class matrixGenerate():
                         self.gridCoulomb[i][j][k][h] = Vc / nframes
                         self.gridLJ[i][j][k][h] = Vlj / math.sqrt(nframes)
 
-    def saveGrids():
+    def saveGrids(self):
         output = ""
 
         I = len(self.gridCoulomb)
@@ -208,7 +212,11 @@ class matrixGenerate():
             for j in xrange(0,J):
                 for k in xrange(0,K):
                     for l in xrange(0,L):
-                        # saida.format("%-15g\t", self.gridCoulomb[i][j][k][l]);
-                        # saida.format("%-15g\t", self.gridLJ[i][j][k][l]);
+                        pass
+                        # output.format("%-15g\t", self.gridCoulomb[i][j][k][l]);
+                        # output.format("%-15g\t", self.gridLJ[i][j][k][l]);
         return output
-    
+
+
+
+matrixGenerate("test.gro", "test.itp")

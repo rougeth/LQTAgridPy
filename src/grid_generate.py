@@ -1,9 +1,6 @@
-from intertools import izip
+from itertools import izip
 
 class gridGenerate():
-    """O construtor dessa classe lê um arquivo com a lista dos arquivos gro e top 
-       correspondentes aos resultados das dinâmicas para cada molécula
-       e gera o Grid para o conjunto de moléculas"""
 
     def __init__(self, x, y, z, dx, dy, dz, atp, fileName):
         self.output = ""
@@ -19,16 +16,16 @@ class gridGenerate():
         self.output = self.output + "\n"
 
             
-            with open(fileName) as f:
-                self.dataFile = f.readlines()
+        with open(fileName) as f:
+            self.dataFile = f.readlines()
 
-            for lineGro, lineItp in pairwise(self.dataFile):
-                fileNameGro = lineGro
-                fileNameItp = lineItp
-                GMC = matrixGenerate(fileNameGro, fileNameItp)
-                GMC.gridGenerate(x,y,z,atp,dx,dy,dz)
-                # output.format(GMC.saveGrids());
-                # output.format("\n");
+        for lineGro, lineItp in pairwise(self.dataFile):
+            fileNameGro = lineGro
+            fileNameItp = lineItp
+            GMC = matrixGenerate(fileNameGro, fileNameItp)
+            GMC.gridGenerate(x,y,z,atp,dx,dy,dz)
+            # output.format(GMC.saveGrids());
+            # output.format("\n");
     
     def pairwise(iterable):
         a = iter(iterable)
