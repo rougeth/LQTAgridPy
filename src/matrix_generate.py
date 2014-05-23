@@ -1,4 +1,5 @@
 import math
+import re
 
 class matrixGenerate():
 
@@ -32,7 +33,7 @@ class matrixGenerate():
                 currentLine += 1
                 line = input[currentLine]
 
-                tokens = line.split(' ')
+                tokens = re.findall(r"[\w\.']+", line)
                 x.insert(i, tokens[currentToken])
                 currentToken += 1
                 y.insert(i, tokens[currentToken])
@@ -48,11 +49,9 @@ class matrixGenerate():
             currentLine += 1
 
         self.m = len(x)
-        print self.m
         self.X = [[0 for self.X in xrange(3)] for self.X in xrange(self.m)]
 
         for i in xrange(0,self.m):
-            print i
             self.X[i][0] = x[i] * 10
             self.X[i][1] = y[i] * 10
             self.X[i][2] = z[i] * 10
@@ -65,30 +64,33 @@ class matrixGenerate():
         currentToken = 1
         line = input[currentLine]
 
-        tokens = line.split(' ')
+        tokens = re.findall(r"[\w\.']+", line)
         token = tokens[currentToken]
         
         while token != "atoms":
-            line = input[++currentLine]
+            currentLine += 1
+            line = input[currentLine]
 
             if line != "":
-                tokens = line.split(' ')
+                tokens = re.findall(r"[\w\.']+", line)
 
                 if tokens[currentToken] == "[":
-                    token = tokens[++currentToken]
+                    currentToken += 1
+                    token = tokens[currentToken]
 
         currentLine = currentLine + 2
         line = input[currentLine]
 
         for i in xrange(0,self.n):
-            tokens = line.split(' ')
-            currentToken = 3
+            tokens = re.findall(r"[\w\.']+", line)
+            currentToken = 1
             self.types[i] = tokens[currentToken]
 
             for j in xrange(0,4):
-                ++currentToken
-                self.cargos[i] = tokens[++currentToken]
-                line = input[++currentLine]
+                currentToken += 2
+                self.cargos[i] = tokens[currentToken]
+                currentLine += 1
+                line = input[currentLine]
 
 
 
@@ -104,14 +106,15 @@ class matrixGenerate():
         line = input[currentLine]
         index = 1
 
-        while input[currentLine+1] != None:
-            line = input[++currentLine]
-            tokens = line.split(' ')
-            ttype.insert(index, tokens[++currentToken])
-            currentToken = currentToken +3
-            sigma.insert(index, tokens[++currentToken]);
-            epsilon.insert(index, tokens[++currentToken]);
-            ++index
+        while len(input) > currentLine +1:
+            currentLine += 1
+            line = input[currentLine]
+            tokens = re.findall(r"[\w\.']+", line)
+            ttype.insert(index, tokens[currentToken])
+            currentToken += 4
+            sigma.insert(index, tokens[currentToken]);
+            currentToken += 1
+            epsilon.insert(index, tokens[currentToken]);
 
         nttypes = len(ttype)
         self.typeConstants = []
@@ -129,19 +132,23 @@ class matrixGenerate():
 
         self.ap = []
 
-        currentLine = 2
+        currentLine = 1
         currentToken = 0
         line = input[currentLine]
 
-        while input[currentLine+1] != None:
+        while len(input) > currentLine +1:
             index = 0
-            line = input[++currentLine]
-            tokens = line.split(' ')
-            self.ap[index] = tokens[++currentToken]
-            self.cargosap[index] = tokens[++currentToken]
-            self.c6ap[index] = tokens[++currentToken]
-            self.c12ap[index] = tokens[++currentToken]
-            ++index
+            currentLine += 1
+            line = input[currentLine]
+            tokens = re.findall(r"[\w\.']+", line)
+            self.ap[index] = tokens[currentToken]
+            currentToken += 1
+            self.cargosap[index] = tokens[currentToken]
+            currentToken += 1
+            self.c6ap[index] = tokens[currentToken]
+            currentToken += 1
+            self.c12ap[index] = tokens[currentToken]
+            index += 1
 
     def determineConstants(self):
         for i in xrange(0,self.n):
@@ -187,7 +194,7 @@ class matrixGenerate():
 
                         Vlj = 0
                         Vc = 0
-                        ++npontos
+                        npontos += 1
 
                         for l in xrange(0,self.m):
                             r = distance(r1, self.X[l]) / 10
@@ -219,4 +226,4 @@ class matrixGenerate():
 
 
 
-matrixGenerate("test.gro", "test.itp")
+matrixGenerate("cg.gro", "test.itp")
