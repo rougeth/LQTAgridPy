@@ -1,11 +1,12 @@
 import math
 import re
+import numPy
 
 class matrixGenerate():
 
     def __init__(self, fileGro, fileItp):
         self.setX(fileGro)
-        self.atomsTypes(fileItp)
+        # self.atomsTypes(fileItp)
         self.loadConstants()
         self.loadAP()
         self.determineConstants()
@@ -92,29 +93,27 @@ class matrixGenerate():
                 currentLine += 1
                 line = input[currentLine]
 
-
-
     def loadConstants(self):
-        with open(fileName) as f:
+        with open("ffcargasnb.itp") as f:
             input = f.readlines()
 
         ttype = []
         sigma = []
         epsilon = []
-        currentLine = 2
-        currentToken = 0
+        currentLine = 1
         line = input[currentLine]
         index = 1
 
         while len(input) > currentLine +1:
+            currentToken = 0
             currentLine += 1
             line = input[currentLine]
-            tokens = re.findall(r"[\w\.']+", line)
+            tokens = re.findall(r"[\w\.\-']+", line)
             ttype.insert(index, tokens[currentToken])
             currentToken += 4
-            sigma.insert(index, tokens[currentToken]);
+            sigma.insert(index, tokens[currentToken])
             currentToken += 1
-            epsilon.insert(index, tokens[currentToken]);
+            epsilon.insert(index, tokens[currentToken])
 
         nttypes = len(ttype)
         self.typeConstants = []
