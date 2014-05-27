@@ -1,6 +1,5 @@
 import math
 import re
-import numPy
 
 class matrixGenerate():
 
@@ -108,7 +107,7 @@ class matrixGenerate():
             currentToken = 0
             currentLine += 1
             line = input[currentLine]
-            tokens = re.findall(r"[\w\.\-']+", line)
+            tokens = re.findall(r"[\w\.\-\+']+", line)
             ttype.insert(index, tokens[currentToken])
             currentToken += 4
             sigma.insert(index, tokens[currentToken])
@@ -122,36 +121,39 @@ class matrixGenerate():
 
         for i in xrange(0,nttypes):
             self.typeConstants.insert(i, ttype[i])
-            self.constantc6.insert(i, 4 * epsilon[i] * math.pow(sigma[i], 6))
-            self.constantc12.insert(i, 4 * epsilon[i] * math.pow(sigma[i], 12))
+            self.constantc6.insert(i, 4.0 * float(epsilon[i]) * (float(sigma[i]) ** 6))
+            self.constantc12.insert(i, 4.0 * float(epsilon[i]) * (float(sigma[i]) ** 12))
 
     def loadAP(self):
         with open("AtomProva.atp") as f:
             input = f.readlines()
 
         self.ap = []
+        self.cargosap = []
+        self.c6ap = []
+        self.c12ap = []
 
         currentLine = 1
-        currentToken = 0
         line = input[currentLine]
+        index = 0
 
-        while len(input) > currentLine +1:
-            index = 0
+        while len(input) > currentLine + 1:
+            currentToken = 0
             currentLine += 1
             line = input[currentLine]
-            tokens = re.findall(r"[\w\.']+", line)
-            self.ap[index] = tokens[currentToken]
+            tokens = re.findall(r"[\w\.\-\+\(\)\=']+", line)
+            self.ap.insert(index, tokens[currentToken])
             currentToken += 1
-            self.cargosap[index] = tokens[currentToken]
+            self.cargosap.insert(index, float(tokens[currentToken]))
             currentToken += 1
-            self.c6ap[index] = tokens[currentToken]
+            self.c6ap.insert(index, float(tokens[currentToken]))
             currentToken += 1
-            self.c12ap[index] = tokens[currentToken]
+            self.c12ap.insert(index, float(tokens[currentToken]))
             index += 1
 
     def determineConstants(self):
         for i in xrange(0,self.n):
-            index = search(self.typeConstants, self.types[i])
+            index = self.search(self.typeConstants, self.types[i])
             self.c6[i] = self.constantc6[index]
             self.c12[i] = self.constantc12[index]
 
