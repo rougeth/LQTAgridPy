@@ -5,7 +5,7 @@ class matrixGenerate():
 
     def __init__(self, fileGro, fileItp):
         self.setX(fileGro)
-        # self.atomsTypes(fileItp)
+        self.atomsTypes(fileItp)
         self.loadConstants()
         self.loadAP()
         self.determineConstants()
@@ -210,6 +210,8 @@ class matrixGenerate():
 
     def saveGrids(self):
         output = ""
+        coulomb = ""
+        lj = ""
 
         I = len(self.gridCoulomb)
         J = len(self.gridCoulomb[0])
@@ -221,10 +223,12 @@ class matrixGenerate():
                 for k in xrange(0,K):
                     for l in xrange(0,L):
                         pass
-                        # output.format("%-15g\t", self.gridCoulomb[i][j][k][l]);
-                        # output.format("%-15g\t", self.gridLJ[i][j][k][l]);
+                        coulomb = "%f\t" % (self.gridCoulomb[i][j][k][l])
+                        lj = "%f\t" % (self.gridLJ[i][j][k][l])
+        
+        output = coulomb + "\n" + ls
         return output
 
 
 
-matrixGenerate("cg.gro", "test.itp")
+# matrixGenerate("cg.gro", "test.itp")
