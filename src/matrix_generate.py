@@ -21,8 +21,6 @@ class matrixGenerate():
         y = []
         z = []
         self.n = int(input[currentLine])
-        self.types = []
-        self.cargos = []
         self.c6 = []
         self.c12 = []
 
@@ -60,19 +58,22 @@ class matrixGenerate():
         with open(fileName) as f:
             input = f.readlines()
 
-        currentLine = 22
-        currentToken = 1
+        self.types = []
+        self.cargos = []
+
+        currentLine = 0
         line = input[currentLine]
 
         tokens = re.findall(r"[\w\.']+", line)
-        token = tokens[currentToken]
+        token = ""
         
         while token != "atoms":
+            currentToken = 0
             currentLine += 1
             line = input[currentLine]
 
             if line != "":
-                tokens = re.findall(r"[\w\.']+", line)
+                tokens = re.findall(r"[\w\.\-\+\[\]\;\n\=']+", line)
 
                 if tokens[currentToken] == "[":
                     currentToken += 1
@@ -80,17 +81,15 @@ class matrixGenerate():
 
         currentLine = currentLine + 2
         line = input[currentLine]
-
+        print self.n, "n"
         for i in xrange(0,self.n):
-            tokens = re.findall(r"[\w\.']+", line)
+            tokens = re.findall(r"[\w\.\-\+\[\]\;\n\=']+", line)
             currentToken = 1
-            self.types[i] = tokens[currentToken]
-
-            for j in xrange(0,4):
-                currentToken += 2
-                self.cargos[i] = tokens[currentToken]
-                currentLine += 1
-                line = input[currentLine]
+            self.types.insert(i, tokens[currentToken])
+            currentToken += 5
+            self.cargos.insert(i, tokens[currentToken])
+            currentLine += 1
+            line = input[currentLine]
 
     def loadConstants(self):
         with open("ffcargasnb.itp") as f:
