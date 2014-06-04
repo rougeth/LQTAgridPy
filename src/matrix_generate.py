@@ -24,7 +24,6 @@ class matrixGenerate():
         self.c6 = []
         self.c12 = []
 
-
         while True:
             for i in range(0,self.n):
                 currentToken = 3
@@ -81,7 +80,6 @@ class matrixGenerate():
 
         currentLine = currentLine + 2
         line = input[currentLine]
-        print self.n, "n"
         for i in xrange(0,self.n):
             tokens = re.findall(r"[\w\.\-\+\[\]\;\n\=']+", line)
             currentToken = 1
@@ -153,8 +151,8 @@ class matrixGenerate():
     def determineConstants(self):
         for i in xrange(0,self.n):
             index = self.search(self.typeConstants, self.types[i])
-            self.c6[i] = self.constantc6[index]
-            self.c12[i] = self.constantc12[index]
+            self.c6.insert(i, self.constantc6[index])
+            self.c12.insert(i, self.constantc12[index])
 
     def search(self, vector, element):
         nelem = len(vector)
@@ -230,4 +228,4 @@ class matrixGenerate():
 
 
 
-# matrixGenerate("cg.gro", "test.itp")
+# matrixGenerate("lig.gro", "lig.itp")
