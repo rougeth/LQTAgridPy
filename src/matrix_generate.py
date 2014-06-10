@@ -1,5 +1,9 @@
 import math
 import re
+import sys
+
+# Here are read input files
+args = sys.argv[1:]
 
 class matrixGenerate():
 
@@ -90,7 +94,7 @@ class matrixGenerate():
             line = input[currentLine]
 
     def loadConstants(self):
-        with open("ffcargasnb.itp") as f:
+        with open("defaultsFiles/ffcargasnb.itp") as f:
             input = f.readlines()
 
         ttype = []
@@ -122,7 +126,7 @@ class matrixGenerate():
             self.constantc12.insert(i, 4.0 * float(epsilon[i]) * (float(sigma[i]) ** 12))
 
     def loadAP(self):
-        with open("AtomProva.atp") as f:
+        with open("defaultsFiles/AtomProva.atp") as f:
             input = f.readlines()
 
         self.ap = []
@@ -226,6 +230,4 @@ class matrixGenerate():
         output = coulomb + "\n" + ls
         return output
 
-
-
-# matrixGenerate("lig.gro", "lig.itp")
+matrixGenerate(args[0], args[1])
