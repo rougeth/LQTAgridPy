@@ -1,5 +1,9 @@
 import math
 import re
+import sys
+
+# Here are read input files
+args = sys.argv[1:]
 
 class matrixGenerate():
 
@@ -21,11 +25,8 @@ class matrixGenerate():
         y = []
         z = []
         self.n = int(input[currentLine])
-        self.types = []
-        self.cargos = []
         self.c6 = []
         self.c12 = []
-
 
         while True:
             for i in range(0,self.n):
@@ -60,19 +61,22 @@ class matrixGenerate():
         with open(fileName) as f:
             input = f.readlines()
 
-        currentLine = 22
-        currentToken = 1
+        self.types = []
+        self.cargos = []
+
+        currentLine = 0
         line = input[currentLine]
 
         tokens = re.findall(r"[\w\.']+", line)
-        token = tokens[currentToken]
+        token = ""
         
         while token != "atoms":
+            currentToken = 0
             currentLine += 1
             line = input[currentLine]
 
             if line != "":
-                tokens = re.findall(r"[\w\.']+", line)
+                tokens = re.findall(r"[\w\.\-\+\[\]\;\n\=']+", line)
 
                 if tokens[currentToken] == "[":
                     currentToken += 1
@@ -80,41 +84,36 @@ class matrixGenerate():
 
         currentLine = currentLine + 2
         line = input[currentLine]
-
         for i in xrange(0,self.n):
-            tokens = re.findall(r"[\w\.']+", line)
+            tokens = re.findall(r"[\w\.\-\+\[\]\;\n\=']+", line)
             currentToken = 1
-            self.types[i] = tokens[currentToken]
-
-            for j in xrange(0,4):
-                currentToken += 2
-                self.cargos[i] = tokens[currentToken]
-                currentLine += 1
-                line = input[currentLine]
-
-
+            self.types.insert(i, tokens[currentToken])
+            currentToken += 5
+            self.cargos.insert(i, tokens[currentToken])
+            currentLine += 1
+            line = input[currentLine]
 
     def loadConstants(self):
-        with open(fileName) as f:
+        with open("defaultsFiles/ffcargasnb.itp") as f:
             input = f.readlines()
 
         ttype = []
         sigma = []
         epsilon = []
-        currentLine = 2
-        currentToken = 0
+        currentLine = 1
         line = input[currentLine]
         index = 1
 
         while len(input) > currentLine +1:
+            currentToken = 0
             currentLine += 1
             line = input[currentLine]
-            tokens = re.findall(r"[\w\.']+", line)
+            tokens = re.findall(r"[\w\.\-\+']+", line)
             ttype.insert(index, tokens[currentToken])
             currentToken += 4
-            sigma.insert(index, tokens[currentToken]);
+            sigma.insert(index, tokens[currentToken])
             currentToken += 1
-            epsilon.insert(index, tokens[currentToken]);
+            epsilon.insert(index, tokens[currentToken])
 
         nttypes = len(ttype)
         self.typeConstants = []
@@ -123,38 +122,41 @@ class matrixGenerate():
 
         for i in xrange(0,nttypes):
             self.typeConstants.insert(i, ttype[i])
-            self.constantc6.insert(i, 4 * epsilon[i] * math.pow(sigma[i], 6))
-            self.constantc12.insert(i, 4 * epsilon[i] * math.pow(sigma[i], 12))
+            self.constantc6.insert(i, 4.0 * float(epsilon[i]) * (float(sigma[i]) ** 6))
+            self.constantc12.insert(i, 4.0 * float(epsilon[i]) * (float(sigma[i]) ** 12))
 
     def loadAP(self):
-        with open("AtomProva.atp") as f:
+        with open("defaultsFiles/AtomProva.atp") as f:
             input = f.readlines()
 
         self.ap = []
+        self.cargosap = []
+        self.c6ap = []
+        self.c12ap = []
 
         currentLine = 1
-        currentToken = 0
         line = input[currentLine]
+        index = 0
 
-        while len(input) > currentLine +1:
-            index = 0
+        while len(input) > currentLine + 1:
+            currentToken = 0
             currentLine += 1
             line = input[currentLine]
-            tokens = re.findall(r"[\w\.']+", line)
-            self.ap[index] = tokens[currentToken]
+            tokens = re.findall(r"[\w\.\-\+\(\)\=']+", line)
+            self.ap.insert(index, tokens[currentToken])
             currentToken += 1
-            self.cargosap[index] = tokens[currentToken]
+            self.cargosap.insert(index, float(tokens[currentToken]))
             currentToken += 1
-            self.c6ap[index] = tokens[currentToken]
+            self.c6ap.insert(index, float(tokens[currentToken]))
             currentToken += 1
-            self.c12ap[index] = tokens[currentToken]
+            self.c12ap.insert(index, float(tokens[currentToken]))
             index += 1
 
     def determineConstants(self):
         for i in xrange(0,self.n):
-            index = search(self.typeConstants, self.types[i])
-            self.c6[i] = self.constantc6[index]
-            self.c12[i] = self.constantc12[index]
+            index = self.search(self.typeConstants, self.types[i])
+            self.c6.insert(i, self.constantc6[index])
+            self.c12.insert(i, self.constantc12[index])
 
     def search(self, vector, element):
         nelem = len(vector)
@@ -209,6 +211,8 @@ class matrixGenerate():
 
     def saveGrids(self):
         output = ""
+        coulomb = ""
+        lj = ""
 
         I = len(self.gridCoulomb)
         J = len(self.gridCoulomb[0])
@@ -220,10 +224,10 @@ class matrixGenerate():
                 for k in xrange(0,K):
                     for l in xrange(0,L):
                         pass
-                        # output.format("%-15g\t", self.gridCoulomb[i][j][k][l]);
-                        # output.format("%-15g\t", self.gridLJ[i][j][k][l]);
+                        coulomb = "%f\t" % (self.gridCoulomb[i][j][k][l])
+                        lj = "%f\t" % (self.gridLJ[i][j][k][l])
+        
+        output = coulomb + "\n" + ls
         return output
 
-
-
-matrixGenerate("cg.gro", "test.itp")
+matrixGenerate(args[0], args[1])
