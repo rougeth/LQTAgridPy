@@ -1,11 +1,7 @@
 import math
 import re
-import sys
 
-# Here are read input files
-args = sys.argv[1:]
-
-class matrixGenerate():
+class MatrixGenerate():
 
     def __init__(self, fileGro, fileItp):
         self.setX(fileGro)
@@ -179,7 +175,7 @@ class matrixGenerate():
         self.gridLJ = [[[[0 for x in xrange(I)] for x in xrange(J)] for x in xrange(K)] for x in xrange(natp)]
 
         for h in xrange(0, natp):
-            elem = search(self.ap, atp[h])
+            elem = self.search(self.ap, atp[h])
             q1 = self.cargosap[elem]
             c6a = self.c6ap[elem]
             c12a = self.c12ap[elem]
@@ -199,7 +195,7 @@ class matrixGenerate():
                         npontos += 1
 
                         for l in xrange(0,self.m):
-                            r = distance(r1, self.X[l]) / 10
+                            r = self.distance(r1, self.X[l]) / 10
                             index = l % self.n
                             c6ij = math.sqrt(c6a * self.c6[index])
                             c12ij = math.sqrt(c12a * self.c12[index])
@@ -229,5 +225,3 @@ class matrixGenerate():
         
         output = coulomb + "\n" + ls
         return output
-
-matrixGenerate(args[0], args[1])
