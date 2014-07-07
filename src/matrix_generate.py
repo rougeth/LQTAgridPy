@@ -167,8 +167,10 @@ class MatrixGenerate():
         f = 138.935485
         nframes = self.m / self.n
         natp = len(atp)
-        self.gridCoulomb = [[[[0 for x in xrange(I)] for x in xrange(J)] for x in xrange(K)] for x in xrange(natp)]
-        self.gridLJ = [[[[0 for x in xrange(I)] for x in xrange(J)] for x in xrange(K)] for x in xrange(natp)]
+        # self.gridCoulomb = [[[[0 for x in xrange(I)] for x in xrange(J)] for x in xrange(K)] for x in xrange(natp)]
+        self.gridCoulomb = [[[[0 for x in xrange(natp)] for x in xrange(K)] for x in xrange(J)] for x in xrange(I)]
+        # self.gridLJ = [[[[0 for x in xrange(I)] for x in xrange(J)] for x in xrange(K)] for x in xrange(natp)]
+        self.gridLJ = [[[[0 for x in xrange(natp)] for x in xrange(K)] for x in xrange(J)] for x in xrange(I)]
 
         for h in xrange(0, natp):
             elem = self.search(self.ap, atp[h])
@@ -223,5 +225,5 @@ class MatrixGenerate():
                         coulomb = "%f\t" % (self.gridCoulomb[i][j][k][l])
                         lj = "%f\t" % (self.gridLJ[i][j][k][l])
         
-        output = coulomb + "\n" + ls
+        output = coulomb + "\n" + lj
         return output

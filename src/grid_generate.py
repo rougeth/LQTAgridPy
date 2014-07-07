@@ -21,13 +21,12 @@ class GridGenerate():
         GMC = matrix_generate.MatrixGenerate(fileGro, fileItp)
         GMC.gridGenerate(x,y,z,atp,dx,dy,dz)
         self.output = self.output + "\n" + GMC.saveGrids() + "\n"
-        print 1
     
     def pairwise(iterable):
         a = iter(iterable)
         return izip(a, a)
 
-    def saveGrid():
+    def saveGrid(self):
         arq = open("test.txt", "w")
         arq.write(self.output)
         arq.close()
