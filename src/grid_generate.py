@@ -1,8 +1,9 @@
 from itertools import izip
+import matrix_generate
 
-class gridGenerate():
+class GridGenerate():
 
-    def __init__(self, x, y, z, dx, dy, dz, atp, fileName):
+    def __init__(self, x, y, z, dx, dy, dz, atp, fileGro, fileItp):
         self.output = ""
         coulomb = ""
         lj = ""
@@ -17,18 +18,17 @@ class gridGenerate():
 
         self.output = coulomb + lj + "\n"
 
-            
-        with open(fileName) as f:
-            self.dataFile = f.readlines()
-
-        for lineGro, lineItp in pairwise(self.dataFile):
-            fileNameGro = lineGro
-            fileNameItp = lineItp
-            GMC = matrixGenerate(fileNameGro, fileNameItp)
-            GMC.gridGenerate(x,y,z,atp,dx,dy,dz)
-            self.output = self.output + "\n" + GMC.saveGrids() + "\n"
+        GMC = matrix_generate.MatrixGenerate(fileGro, fileItp)
+        GMC.gridGenerate(x,y,z,atp,dx,dy,dz)
+        self.output = self.output + "\n" + GMC.saveGrids() + "\n"
+        print 1
     
     def pairwise(iterable):
         a = iter(iterable)
         return izip(a, a)
+
+    def saveGrid():
+        arq = open("test.txt", "w")
+        arq.write(self.output)
+        arq.close()
         

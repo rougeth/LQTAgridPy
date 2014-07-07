@@ -1,11 +1,7 @@
 import math
 import re
-import sys
 
-# Here are read input files
-args = sys.argv[1:]
-
-class matrixGenerate():
+class MatrixGenerate():
 
     def __init__(self, fileGro, fileItp):
         self.setX(fileGro)
@@ -53,9 +49,9 @@ class matrixGenerate():
         self.X = [[0 for self.X in xrange(3)] for self.X in xrange(self.m)]
 
         for i in xrange(0,self.m):
-            self.X[i][0] = x[i] * 10
-            self.X[i][1] = y[i] * 10
-            self.X[i][2] = z[i] * 10
+            self.X[i][0] = float(x[i]) * 10
+            self.X[i][1] = float(y[i]) * 10
+            self.X[i][2] = float(z[i]) * 10
 
     def atomsTypes(self, fileName):
         with open(fileName) as f:
@@ -166,10 +162,6 @@ class matrixGenerate():
                 return i
 
         return -1
-
-    def distance(self, r1, r2):
-        d = math.sqrt(math.pow((r1[0] - r2[0]), 2) + math.pow((r1[1] - r2[1]) ,2) + math.pow((r1[2] - r2[2]), 2))
-        return d
         
     def gridGenerate(self, I, J, K, atp, dx, dy, dz):
         f = 138.935485
@@ -179,7 +171,7 @@ class matrixGenerate():
         self.gridLJ = [[[[0 for x in xrange(I)] for x in xrange(J)] for x in xrange(K)] for x in xrange(natp)]
 
         for h in xrange(0, natp):
-            elem = search(self.ap, atp[h])
+            elem = self.search(self.ap, atp[h])
             q1 = self.cargosap[elem]
             c6a = self.c6ap[elem]
             c12a = self.c12ap[elem]
@@ -199,15 +191,19 @@ class matrixGenerate():
                         npontos += 1
 
                         for l in xrange(0,self.m):
-                            r = distance(r1, self.X[l]) / 10
+                            r = self.distance(r1, self.X[l]) / 10
                             index = l % self.n
                             c6ij = math.sqrt(c6a * self.c6[index])
                             c12ij = math.sqrt(c12a * self.c12[index])
                             Vlj = Vlj + (c12ij / (math.pow(r, 12))) - (c6ij / (math.pow(r, 6)))
-                            Vc = Vc + f * q1 * self.cargos[index] / r
+                            Vc = Vc + f * float(q1) * float(self.cargos[index]) / r
 
                         self.gridCoulomb[i][j][k][h] = Vc / nframes
                         self.gridLJ[i][j][k][h] = Vlj / math.sqrt(nframes)
+
+    def distance(self, r1, r2):
+        d = math.sqrt(math.pow((r1[0] - r2[0]), 2) + math.pow((r1[1] - r2[1]) ,2) + math.pow((r1[2] - r2[2]), 2))
+        return d
 
     def saveGrids(self):
         output = ""
@@ -229,5 +225,3 @@ class matrixGenerate():
         
         output = coulomb + "\n" + ls
         return output
-
-matrixGenerate(args[0], args[1])
