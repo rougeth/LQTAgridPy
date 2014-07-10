@@ -36,22 +36,24 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
     required=True,
     help='Dimensions of the box.'
 )
-@click.option('--atoms', '-a',
+@click.option('--atom', '-a',
     metavar='[atom]',
     multiple=True,
     required=True,
     help='Atom of proof.'
 )
 
-def main(gro, itp, coordinates, dimensions, atoms):
-    '''LQTAgridPy is a python version of LQTAgrid, a practical application of 4D analysis methodology developed at Universidade de Campinas.
+def main(gro, itp, coordinates, dimensions, atom):
+    '''LQTAgridPy is a python version of LQTAgrid, a practical application of
+    4D analysis methodology developed at Universidade de Campinas.
 
-    It gives a command line interface and classes for python and non-python scripts.
+    More: https://github.com/rougeth/LQTAgridPy
     '''
+
     grid = grid_generate.GridGenerate(
         coordinates[0], coordinates[1], coordinates[2],
         dimensions[0], dimensions[1], dimensions[2],
-        atoms,
+        atom,
         gro,
         itp
     )
