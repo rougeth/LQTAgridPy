@@ -1,3 +1,6 @@
+#!/usr/bin/env
+# coding: utf-8
+
 import click
 
 import grid_generate
