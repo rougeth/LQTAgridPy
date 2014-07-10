@@ -1,19 +1,59 @@
+import click
+
 import grid_generate
-import sys
-import re
 
-# Here are read input files
-args = sys.argv[1:]
 
-def main(fileGro, fileItp, coordinates, dimensions, atp):
-    coordinates = re.findall(r"[\w\.\-\+\(\)\=']+", coordinates)
-    dimensions = re.findall(r"[\w\.\-\+\(\)\=']+", dimensions)
-    atp = re.findall(r"[\w\.\-\+\(\)\=']+", atp)
+CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
-    x,y,z = int(coordinates[0]), int(coordinates[1]), int(coordinates[2])
-    dx, dy, dz = int(dimensions[0]), int(dimensions[1]), int(dimensions[2])
-    
-    grid = grid_generate.GridGenerate(x, y, z, dx, dy, dz, atp, fileGro, fileItp)
+
+@click.command(context_settings=CONTEXT_SETTINGS)
+@click.option('--gro',
+    metavar='<path>',
+    type=click.Path(exists=True),
+    required=True,
+    help='gro file path.'
+)
+@click.option('--itp',
+    metavar='<path>',
+    type=click.Path(exists=True),
+    required=True,
+    help='itp file path.'
+)
+@click.option('--coordinates', '-c',
+    metavar='<x> <y> <z>',
+    type=int,
+    nargs=3,
+    required=True,
+    help='Coordinates of the box.'
+)
+@click.option('--dimensions', '-d',
+    metavar='<x> <y> <z>',
+    type=int,
+    nargs=3,
+    required=True,
+    help='Dimensions of the box.'
+)
+@click.option('--atoms', '-a',
+    metavar='[atom]',
+    multiple=True,
+    required=True,
+    help='Atom of proof.'
+)
+
+def main(gro, itp, coordinates, dimensions, atoms):
+    '''LQTAgridPy is a python version of LQTAgrid, a practical application of 4D analysis methodology developed at Universidade de Campinas.
+
+    It gives a command line interface and classes for python and non-python scripts.
+    '''
+    grid = grid_generate.GridGenerate(
+        coordinates[0], coordinates[1], coordinates[2],
+        dimensions[0], dimensions[1], dimensions[2],
+        atoms,
+        gro,
+        itp
+    )
     grid.saveGrid()
 
-main(args[0], args[1], args[2], args[3], args[4])
+
+if __name__ == '__main__':
+    main()
