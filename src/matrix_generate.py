@@ -219,9 +219,8 @@ class MatrixGenerate():
             for j in xrange(0,J):
                 for k in xrange(0,K):
                     for l in xrange(0,L):
-                        pass
-                        coulomb = "%f\t" % (self.gridCoulomb[i][j][k][l])
-                        lj = "%f\t" % (self.gridLJ[i][j][k][l])
+                        coulomb = coulomb + "%f\t" % (self.gridCoulomb[i][j][k][l])
+                        lj = lj + "%f\t" % (self.gridLJ[i][j][k][l])
         
         output = coulomb + "\n" + lj
         return output
