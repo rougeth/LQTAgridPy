@@ -25,7 +25,7 @@ class MatrixGenerate():
         self.c12 = []
 
         while True:
-            for i in range(0,self.n):
+            for i in range(self.n):
                 currentToken = 3
                 currentLine += 1
                 line = input[currentLine]
@@ -48,7 +48,7 @@ class MatrixGenerate():
         self.m = len(x)
         self.X = [[0 for self.X in xrange(3)] for self.X in xrange(self.m)]
 
-        for i in xrange(0,self.m):
+        for i in xrange(self.m):
             self.X[i][0] = float(x[i]) * 10
             self.X[i][1] = float(y[i]) * 10
             self.X[i][2] = float(z[i]) * 10
@@ -78,9 +78,9 @@ class MatrixGenerate():
                     currentToken += 1
                     token = tokens[currentToken]
 
-        currentLine = currentLine + 2
+        currentLine += 2
         line = input[currentLine]
-        for i in xrange(0,self.n):
+        for i in xrange(self.n):
             tokens = re.findall(r"[\w\.\-\+\[\]\;\n\=']+", line)
             currentToken = 1
             self.types.insert(i, tokens[currentToken])
@@ -116,7 +116,7 @@ class MatrixGenerate():
         self.constantc6 = []
         self.constantc12 = []
 
-        for i in xrange(0,nttypes):
+        for i in xrange(nttypes):
             self.typeConstants.insert(i, ttype[i])
             self.constantc6.insert(i, 4.0 * float(epsilon[i]) * (float(sigma[i]) ** 6))
             self.constantc12.insert(i, 4.0 * float(epsilon[i]) * (float(sigma[i]) ** 12))
@@ -149,15 +149,15 @@ class MatrixGenerate():
             index += 1
 
     def determineConstants(self):
-        for i in xrange(0,self.n):
+        for i in xrange(self.n):
             index = self.search(self.typeConstants, self.types[i])
             self.c6.insert(i, self.constantc6[index])
             self.c12.insert(i, self.constantc12[index])
 
     def search(self, vector, element):
-        nelem = len(vector)
+        nElem = len(vector)
 
-        for i in xrange(0,nelem):
+        for i in xrange(nElem):
             if element == vector[i]:
                 return i
 
@@ -170,27 +170,24 @@ class MatrixGenerate():
         self.gridCoulomb = [[[[0 for x in xrange(natp)] for x in xrange(K)] for x in xrange(J)] for x in xrange(I)]
         self.gridLJ = [[[[0 for x in xrange(natp)] for x in xrange(K)] for x in xrange(J)] for x in xrange(I)]
 
-        for h in xrange(0, natp):
+        for h in xrange(natp):
             elem = self.search(self.ap, atp[h])
             q1 = self.cargosap[elem]
             c6a = self.c6ap[elem]
             c12a = self.c12ap[elem]
-
+            Vlj = 0
+            Vc = 0
             npontos = 0
             r1 = []
 
-            for i in xrange(0,I):
+            for i in xrange(I):
                 r1.insert(0, i + dx)
-                for j in xrange(0,J):
+                for j in xrange(J):
                     r1.insert(1, j + dy)
-                    for k in xrange(0,K):
+                    for k in xrange(K):
                         r1.insert(2, k + dz)
-
-                        Vlj = 0
-                        Vc = 0
                         npontos += 1
-
-                        for l in xrange(0,self.m):
+                        for l in xrange(self.m):
                             r = self.distance(r1, self.X[l]) / 10
                             index = l % self.n
                             c6ij = math.sqrt(c6a * self.c6[index])
@@ -206,7 +203,6 @@ class MatrixGenerate():
         return d
 
     def saveGrids(self):
-        output = ""
         coulomb = ""
         lj = ""
 
@@ -215,12 +211,12 @@ class MatrixGenerate():
         K = len(self.gridCoulomb[0][0])
         L = len(self.gridCoulomb[0][0][0])
         
-        for i in xrange(0,I):
-            for j in xrange(0,J):
-                for k in xrange(0,K):
-                    for l in xrange(0,L):
-                        coulomb = coulomb + "%f\t" % (self.gridCoulomb[i][j][k][l])
-                        lj = lj + "%f\t" % (self.gridLJ[i][j][k][l])
+        for i in xrange(I):
+            for j in xrange(J):
+                for k in xrange(K):
+                    for l in xrange(L):
+                        coulomb += "%f\t" % (self.gridCoulomb[i][j][k][l])
+                        lj += "%f\t" % (self.gridLJ[i][j][k][l])
         
         output = coulomb + "\n" + lj
         return output
