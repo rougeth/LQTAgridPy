@@ -118,8 +118,11 @@ class MatrixGenerate():
 
         for i in xrange(nttypes):
             self.typeConstants.insert(i, ttype[i])
-            self.constantc6.insert(i, 4.0 * float(epsilon[i]) * (float(sigma[i]) ** 6))
-            self.constantc12.insert(i, 4.0 * float(epsilon[i]) * (float(sigma[i]) ** 12))
+
+            self.constantc6.insert(i, 4.0 * float(epsilon[i])
+                                    * (float(sigma[i]) ** 6))
+            self.constantc12.insert(i, 4.0 * float(epsilon[i])
+                                    * (float(sigma[i]) ** 12))
 
     def loadAP(self):
         with open("defaultsFiles/AtomProva.atp") as f:
@@ -163,12 +166,15 @@ class MatrixGenerate():
 
         return -1
         
-    def gridGenerate(self, I, J, K, atp, dx, dy, dz):
+    def gridGenerate(self, dimX, dimY, dimZ, atp, x0, y0, z0):
         f = 138.935485
         nframes = self.m / self.n
         natp = len(atp)
-        self.gridCoulomb = [[[[0 for x in xrange(natp)] for x in xrange(K)] for x in xrange(J)] for x in xrange(I)]
-        self.gridLJ = [[[[0 for x in xrange(natp)] for x in xrange(K)] for x in xrange(J)] for x in xrange(I)]
+        self.gridCoulomb = [[[[0 for x in xrange(natp)] for x in xrange(dimZ)]
+                            for x in xrange(dimY)] for x in xrange(dimX)]
+
+        self.gridLJ = [[[[0 for x in xrange(natp)] for x in xrange(dimZ)]
+                        for x in xrange(dimY)] for x in xrange(dimX)]
 
         for h in xrange(natp):
             elem = self.search(self.ap, atp[h])
@@ -180,18 +186,19 @@ class MatrixGenerate():
             npontos = 0
             r1 = []
 
-            for i in xrange(I):
-                r1.insert(0, i + dx)
-                for j in xrange(J):
-                    r1.insert(1, j + dy)
-                    for k in xrange(K):
-                        r1.insert(2, k + dz)
+            for i in xrange(dimX):
+                r1.insert(0, i + x0)
+                for j in xrange(dimY):
+                    r1.insert(1, j + y0)
+                    for k in xrange(dimZ):
+                        r1.insert(2, k + z0)
                         npontos += 1
                         for l in xrange(self.m):
                             r = self.distance(r1, self.X[l]) / 10
                             index = l % self.n
                             c6ij = math.sqrt(c6a * self.c6[index])
                             c12ij = math.sqrt(c12a * self.c12[index])
+
                             Vlj = Vlj + (c12ij / (math.pow(r, 12))) - (c6ij / (math.pow(r, 6)))
                             Vc = Vc + f * float(q1) * float(self.cargos[index]) / r
 
@@ -199,7 +206,8 @@ class MatrixGenerate():
                         self.gridLJ[i][j][k][h] = Vlj / math.sqrt(nframes)
 
     def distance(self, r1, r2):
-        d = math.sqrt(math.pow((r1[0] - r2[0]), 2) + math.pow((r1[1] - r2[1]) ,2) + math.pow((r1[2] - r2[2]), 2))
+        d = math.sqrt(math.pow((r1[0] - r2[0]), 2)
+                + math.pow((r1[1] - r2[1]) ,2) + math.pow((r1[2] - r2[2]), 2))
         return d
 
     def saveGrids(self):

@@ -42,8 +42,15 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
     required=True,
     help='Atom of proof.'
 )
+@click.option('--step', '-s',
+    metavar='<x>',
+    type=float,
+    nargs=1,
+    required=True,
+    help='Steps for navegation on matrix.'
+)
 
-def main(gro, itp, coordinates, dimensions, atom):
+def main(gro, itp, coordinates, dimensions, atom, step):
     '''LQTAgridPy is a python version of LQTAgrid, a practical application of
     4D analysis methodology developed at Universidade de Campinas.
 
@@ -55,7 +62,8 @@ def main(gro, itp, coordinates, dimensions, atom):
         dimensions[0], dimensions[1], dimensions[2],
         atom,
         gro,
-        itp
+        itp,
+        step
     )
     grid.saveGrid()
 

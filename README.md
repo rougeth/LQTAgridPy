@@ -23,4 +23,5 @@ For the implementation `lqtagrid` just enter on the command line, passing the re
 	--itp			  The command requires the path of a file with the '.itp' extension. 
 	-c 				  The command requires three integers numbers to determine the array coordinates. 
 	-d 				  The command requires three integers numbers to determine the array dimensions. 
-	-a 				  The command requires a 'string', with reference to a chemical element (atom test).. 
+	-a 				  The command requires a 'string', with reference to a chemical element (atom test).
+	-s 				  The command requires the float number to determine the step for navegation on matrix.
