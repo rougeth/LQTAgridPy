@@ -1,5 +1,9 @@
+#!/usr/bin/env
+# coding: utf-8
+
 import math
 import re
+import utils
 
 class MatrixGenerate():
 
@@ -151,12 +155,6 @@ class MatrixGenerate():
             self.c12ap.insert(index, float(tokens[currentToken]))
             index += 1
 
-    def determineConstants(self):
-        for i in xrange(self.n):
-            index = self.search(self.typeConstants, self.types[i])
-            self.c6.insert(i, self.constantc6[index])
-            self.c12.insert(i, self.constantc12[index])
-
     def search(self, vector, element):
         nElem = len(vector)
 
@@ -165,8 +163,14 @@ class MatrixGenerate():
                 return i
 
         return -1
+
+    def determineConstants(self):
+        for i in xrange(self.n):
+            index = self.search(self.typeConstants, self.types[i])
+            self.c6.insert(i, self.constantc6[index])
+            self.c12.insert(i, self.constantc12[index])
         
-    def gridGenerate(self, dimX, dimY, dimZ, atp, x0, y0, z0):
+    def gridGenerate(self, dimX, dimY, dimZ, atp, x0, y0, z0, step):
         f = 138.935485
         nframes = self.m / self.n
         natp = len(atp)
@@ -187,14 +191,14 @@ class MatrixGenerate():
             r1 = []
 
             for i in xrange(dimX):
-                r1.insert(0, i + x0)
+                r1.insert(0, i*step+x0)
                 for j in xrange(dimY):
-                    r1.insert(1, j + y0)
+                    r1.insert(1, j*step+y0)
                     for k in xrange(dimZ):
-                        r1.insert(2, k + z0)
+                        r1.insert(2, k*step+z0)
                         npontos += 1
                         for l in xrange(self.m):
-                            r = self.distance(r1, self.X[l]) / 10
+                            r = utils.Distance(r1, self.X[l]) / 10
                             index = l % self.n
                             c6ij = math.sqrt(c6a * self.c6[index])
                             c12ij = math.sqrt(c12a * self.c12[index])
@@ -205,26 +209,12 @@ class MatrixGenerate():
                         self.gridCoulomb[i][j][k][h] = Vc / nframes
                         self.gridLJ[i][j][k][h] = Vlj / math.sqrt(nframes)
 
-    def distance(self, r1, r2):
-        d = math.sqrt(math.pow((r1[0] - r2[0]), 2)
-                + math.pow((r1[1] - r2[1]) ,2) + math.pow((r1[2] - r2[2]), 2))
-        return d
-
-    def saveGrids(self):
-        coulomb = ""
-        lj = ""
-
-        I = len(self.gridCoulomb)
-        J = len(self.gridCoulomb[0])
-        K = len(self.gridCoulomb[0][0])
-        L = len(self.gridCoulomb[0][0][0])
-        
-        for i in xrange(I):
-            for j in xrange(J):
-                for k in xrange(K):
-                    for l in xrange(L):
-                        coulomb += "%f\t" % (self.gridCoulomb[i][j][k][l])
-                        lj += "%f\t" % (self.gridLJ[i][j][k][l])
-        
-        output = coulomb + "\n" + lj
-        return output
+    def returnGridValuePosition(self, I, J, K, L, optionGrid):
+        if optionGrid == "C":
+            coulomb = "%f\t" % (self.gridCoulomb[I][J][K][L])
+            return coulomb
+        elif optionGrid == 'L':
+            lj = "%f\t" % (self.gridLJ[I][J][K][L])
+            return lj
+        else:
+            return "Invalid Option Grid"
