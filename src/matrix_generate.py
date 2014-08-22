@@ -24,12 +24,12 @@ class MatrixGenerate():
         x = []
         y = []
         z = []
-        self.n = int(input[currentLine])
+        self.numberElements = int(input[currentLine])
         self.c6 = []
         self.c12 = []
 
         while True:
-            for i in range(self.n):
+            for i in range(self.numberElements):
                 currentToken = 3
                 currentLine += 1
                 line = input[currentLine]
@@ -84,7 +84,7 @@ class MatrixGenerate():
 
         currentLine += 2
         line = input[currentLine]
-        for i in xrange(self.n):
+        for i in xrange(self.numberElements):
             tokens = re.findall(r"[\w\.\-\+\[\]\;\n\=']+", line)
             currentToken = 1
             self.types.insert(i, tokens[currentToken])
@@ -165,14 +165,14 @@ class MatrixGenerate():
         return -1
 
     def determineConstants(self):
-        for i in xrange(self.n):
+        for i in xrange(self.numberElements):
             index = self.search(self.typeConstants, self.types[i])
             self.c6.insert(i, self.constantc6[index])
             self.c12.insert(i, self.constantc12[index])
         
     def gridGenerate(self, dimX, dimY, dimZ, atp, x0, y0, z0, step):
         f = 138.935485
-        nframes = self.m / self.n
+        nframes = self.m / self.numberElements
         natp = len(atp)
         self.gridCoulomb = [[[[0 for x in xrange(natp)] for x in xrange(dimZ)]
                             for x in xrange(dimY)] for x in xrange(dimX)]
@@ -199,7 +199,7 @@ class MatrixGenerate():
                         npontos += 1
                         for l in xrange(self.m):
                             r = utils.Distance(r1, self.X[l]) / 10
-                            index = l % self.n
+                            index = l % self.numberElements
                             c6ij = math.sqrt(c6a * self.c6[index])
                             c12ij = math.sqrt(c12a * self.c12[index])
 

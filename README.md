@@ -1,3 +1,5 @@
+![LQTAGridPy](docs/images/LQTAGridPy.png "LQTAGridPy")
+
 # LQTAgridPy
 LQTAgridPy is a python version of [LQTAgrid](http://lqta.iqm.unicamp.br/portugues/siteLQTA/LQTAgrid.html), a practical application of 4D QSAR analysis methodology developed at Universidade de Campinas. The main difference is that LQTAgridPy has a command line interface and it is written in Python :).
 
