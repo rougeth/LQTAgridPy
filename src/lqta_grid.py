@@ -9,17 +9,11 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
-@click.option('--gro',
+@click.option('--txt',
     metavar='<path>',
     type=click.Path(exists=True),
     required=True,
-    help='gro file path.'
-)
-@click.option('--itp',
-    metavar='<path>',
-    type=click.Path(exists=True),
-    required=True,
-    help='itp file path.'
+    help='files path, gro and itp.'
 )
 @click.option('--coordinates', '-c',
     metavar='<x> <y> <z>',
@@ -49,7 +43,7 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
     help='Steps for navegation on matrix.'
 )
 
-def main(gro, itp, coordinates, dimensions, atom, step):
+def main(txt, coordinates, dimensions, atom, step):
     '''LQTAgridPy is a python version of LQTAgrid, a practical application of
     4D analysis methodology developed at Universidade de Campinas.
 
@@ -60,8 +54,7 @@ def main(gro, itp, coordinates, dimensions, atom, step):
         coordinates[0], coordinates[1], coordinates[2],
         dimensions[0], dimensions[1], dimensions[2],
         atom,
-        gro,
-        itp,
+        txt,
         step
     )
     grid.saveGrid()

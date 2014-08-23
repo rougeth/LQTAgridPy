@@ -171,16 +171,20 @@ class MatrixGenerate():
             self.c12.insert(i, self.constantc12[index])
         
     def gridGenerate(self, dimX, dimY, dimZ, atp, x0, y0, z0, step):
+        self.DimX = dimX
+        self.DimY = dimY
+        self.DimZ = dimZ
+        self.natp = len(atp)
+
         f = 138.935485
         nframes = self.m / self.numberElements
-        natp = len(atp)
-        self.gridCoulomb = [[[[0 for x in xrange(natp)] for x in xrange(dimZ)]
-                            for x in xrange(dimY)] for x in xrange(dimX)]
+        self.gridCoulomb = [[[[0 for x in xrange(self.natp)] for x in xrange(self.DimZ)]
+                            for x in xrange(self.DimY)] for x in xrange(self.DimX)]
 
-        self.gridLJ = [[[[0 for x in xrange(natp)] for x in xrange(dimZ)]
-                        for x in xrange(dimY)] for x in xrange(dimX)]
+        self.gridLJ = [[[[0 for x in xrange(self.natp)] for x in xrange(self.DimZ)]
+                        for x in xrange(self.DimY)] for x in xrange(self.DimX)]
 
-        for h in xrange(natp):
+        for h in xrange(self.natp):
             elem = self.search(self.ap, atp[h])
             q1 = self.cargosap[elem]
             c6a = self.c6ap[elem]
@@ -190,11 +194,11 @@ class MatrixGenerate():
             npontos = 0
             r1 = []
 
-            for i in xrange(dimX):
+            for i in xrange(self.DimX):
                 r1.insert(0, i*step+x0)
-                for j in xrange(dimY):
+                for j in xrange(self.DimY):
                     r1.insert(1, j*step+y0)
-                    for k in xrange(dimZ):
+                    for k in xrange(self.DimZ):
                         r1.insert(2, k*step+z0)
                         npontos += 1
                         for l in xrange(self.m):
@@ -209,12 +213,16 @@ class MatrixGenerate():
                         self.gridCoulomb[i][j][k][h] = Vc / nframes
                         self.gridLJ[i][j][k][h] = Vlj / math.sqrt(nframes)
 
-    def returnGridValuePosition(self, I, J, K, L, optionGrid):
-        if optionGrid == "C":
-            coulomb = "%f\t" % (self.gridCoulomb[I][J][K][L])
-            return coulomb
-        elif optionGrid == 'L':
-            lj = "%f\t" % (self.gridLJ[I][J][K][L])
-            return lj
-        else:
-            return "Invalid Option Grid"
+    def getMatrix(self, optionGrid):
+        result = ""
+        for i in xrange(self.DimX):
+            for j in xrange(self.DimY):
+                for k in xrange(self.DimZ):
+                    for l in xrange(self.natp):
+                        if optionGrid == "C":
+                            result += "%f\t" % (self.gridCoulomb[i][j][k][l])
+                        elif optionGrid == 'L':
+                            result += "%f\t" % (self.gridLJ[i][j][k][l])
+                        else:
+                            pass
+        return result

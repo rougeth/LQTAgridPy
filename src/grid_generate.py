@@ -2,13 +2,13 @@
 # coding: utf-8
 
 import matrix_generate
+import utils
 
 class GridGenerate():
 
-    def __init__(self, x0, y0, z0, dim_x, dim_y, dim_z, atp, fileGro, fileItp, step):
+    def __init__(self, x0, y0, z0, dim_x, dim_y, dim_z, atp, files, step):
         coulomb = ""
         lj = ""
-        GMC = matrix_generate.MatrixGenerate(fileGro, fileItp)
 
         if not step == 1: 
             I = int((dim_x/step)+(1/step-1))
@@ -21,8 +21,6 @@ class GridGenerate():
 
         n = len(atp)
 
-        GMC.gridGenerate(I, J, K, atp, x0, y0, z0, step)
-
         for i in xrange(I):
             for j in xrange(J):
                 for k in xrange(K):
@@ -32,13 +30,19 @@ class GridGenerate():
                         value_z = k*step+z0
                         coulomb += "%.2f_%.2f_%.2f_%s_C: \t" % (value_x, value_y,
                                                                 value_z, atp[l])
-                        coulomb += GMC.returnGridValuePosition(i, j, k, l, "C") + "\n"
 
                         lj += "%.2f_%.2f_%.2f_%s_LJ: \t" % (value_x, value_y,
                                                             value_z, atp[l])
-                        lj += GMC.returnGridValuePosition(i, j, k, l, "L")  + "\n"
+        self.output = coulomb + lj
 
-        self.output = coulomb + "\n" + lj
+        dataFile = open(files).read().splitlines() 
+
+        for fileGro, fileItp in utils.pairwise(dataFile):
+            matrix = matrix_generate.MatrixGenerate(fileGro, fileItp)
+            matrix.gridGenerate(I, J, K, atp, x0, y0, z0, step)
+            valuesCoulomb = matrix.getMatrix("C")
+            valuesLj = matrix.getMatrix("L")
+            self.output += "\n" + valuesCoulomb + valuesLj
 
     def saveGrid(self):
         arq = open("test.txt", "w")
