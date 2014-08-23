@@ -7,9 +7,6 @@ import utils
 class GridGenerate():
 
     def __init__(self, x0, y0, z0, dim_x, dim_y, dim_z, atp, files, step):
-        coulomb = ""
-        lj = ""
-
         if not step == 1: 
             I = int((dim_x/step)+(1/step-1))
             J = int((dim_y/step)+(1/step-1))
@@ -20,6 +17,8 @@ class GridGenerate():
             K = dim_z + 1
 
         n = len(atp)
+        coulomb = ""
+        lj = ""
 
         for i in xrange(I):
             for j in xrange(J):
