@@ -21,8 +21,7 @@ For the implementation `lqtagrid` just enter on the command line, passing the re
 # Commandline Options
 	
 	--help            show this help message and exit
-	--gro			  The command requires the path of a file with the '.gro' extension. 
-	--itp			  The command requires the path of a file with the '.itp' extension. 
+	--mols			  The command requires the path of a file text with the '.gro' and '.itp' extensions. 
 	-c 				  The command requires three integers numbers to determine the array coordinates. 
 	-d 				  The command requires three integers numbers to determine the array dimensions. 
 	-a 				  The command requires a 'string', with reference to a chemical element (atom test).
