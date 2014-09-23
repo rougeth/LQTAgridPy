@@ -1,28 +1,33 @@
+# LQTAgridPy
+
 ![LQTAGridPy](docs/images/LQTAGridPy.png "LQTAGridPy")
 
-# LQTAgridPy
 LQTAgridPy is a python version of [LQTAgrid](http://lqta.iqm.unicamp.br/portugues/siteLQTA/LQTAgrid.html), a practical application of 4D QSAR analysis methodology developed at Universidade de Campinas. The main difference is that LQTAgridPy has a command line interface and it is written in Python :).
 
 In a study of QSAR main goal is to find quantitative relations between chemical structure, ie, physicochemical, structural and conformational properties and biological response through a mathematical model. These relationships help to understand and explain the mechanism of action of a drug without a molecular level and allow the planning and development of new compounds that exhibit desirable biological properties.
 
-# Installation
+## Installation
 
-Install the latest stable version of lqtaGrid with a python package manager
-like `pip`:
+Install the latest stable version of LQTAgridPy with the python package manager `pip`:
 
-    $ pip install lqtagrid
+    $ pip install lqtagridpy
 
-# Run
+## Usage
 
-For the implementation `lqtagrid` just enter on the command line, passing the required parameters for generating matrix.
+```
+$ python lqtagrid.py  --help
+Usage: lqtagrid.py [OPTIONS]
 
+  LQTAgridPy is a python version of LQTAgrid, a practical application of 4D
+  analysis methodology developed at Universidade de Campinas.
 
+  More: https://github.com/rougeth/LQTAgridPy
 
-# Commandline Options
-	
-	--help            show this help message and exit
-	--mols			  The command requires the path of a file text with the '.gro' and '.itp' extensions. 
-	-c 				  The command requires three integers numbers to determine the array coordinates. 
-	-d 				  The command requires three integers numbers to determine the array dimensions. 
-	-a 				  The command requires a 'string', with reference to a chemical element (atom test).
-	-s 				  The command requires the float number to determine the step for navegation on matrix.
+Options:
+  --mols <path>                  files path, gro and itp.  [required]
+  -c, --coordinates <x> <y> <z>  Coordinates of the box.  [required]
+  -d, --dimensions <x> <y> <z>   Dimensions of the box.  [required]
+  -a, --atom [atom]              Atom of proof.  [required]
+  -s, --step <x>                 Steps for navegation on matrix.  [required]
+  -h, --help                     Show this message and exit.
+```
