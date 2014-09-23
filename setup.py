@@ -15,7 +15,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'lqtagridpy = src.lqta_grid:main'
+            'lqtagridpy = src.lqtagrid:run'
         ],
     }
 )

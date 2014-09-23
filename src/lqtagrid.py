@@ -43,7 +43,7 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
     help='Steps for navegation on matrix.'
 )
 
-def main(mols, coordinates, dimensions, atom, step):
+def run(mols, coordinates, dimensions, atom, step):
     '''LQTAgridPy is a python version of LQTAgrid, a practical application of
     4D analysis methodology developed at Universidade de Campinas.
 
@@ -61,4 +61,4 @@ def main(mols, coordinates, dimensions, atom, step):
 
 
 if __name__ == '__main__':
-    main()
+    run()
