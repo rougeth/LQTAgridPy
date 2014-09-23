@@ -1,7 +1,11 @@
 #!/usr/bin/env
 # coding: utf-8
 
-from itertools import izip
+try:
+    from itertools import izip
+except ImportError:
+    izip = zip
+
 import math
 
 def Distance(r1, r2):
@@ -12,4 +16,4 @@ def Distance(r1, r2):
 def pairwise(iterable):
     a = iter(iterable)
     return izip(a, a)
-    
+
