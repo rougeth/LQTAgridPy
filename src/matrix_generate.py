@@ -17,7 +17,6 @@ class MatrixGenerate():
     def setX(self, fileName):
         with open(fileName) as f:
             input = f.readlines()
-
         currentLine = 1
         line = input[currentLine]
 
@@ -30,7 +29,7 @@ class MatrixGenerate():
 
         while True:
             for i in range(self.numberElements):
-                currentToken = 3
+                currentToken = 4
                 currentLine += 1
                 line = input[currentLine]
 
@@ -114,6 +113,7 @@ class MatrixGenerate():
             sigma.insert(index, tokens[currentToken])
             currentToken += 1
             epsilon.insert(index, tokens[currentToken])
+            index += 1
 
         nttypes = len(ttype)
         self.typeConstants = []
@@ -192,14 +192,17 @@ class MatrixGenerate():
             Vlj = 0
             Vc = 0
             npontos = 0
-            r1 = []
-
+            #r1 = []
+            r1 = [0.0,0.0,0.0]
+            
             for i in xrange(self.DimX):
-                r1.insert(0, i*step+x0)
+                r1[0] = i*step+x0
                 for j in xrange(self.DimY):
-                    r1.insert(1, j*step+y0)
+                    r1[1] = j*step+y0
                     for k in xrange(self.DimZ):
-                        r1.insert(2, k*step+z0)
+                        r1[2] = k*step+z0
+                        Vlj = 0
+                        Vc = 0
                         npontos += 1
                         for l in xrange(self.m):
                             r = utils.Distance(r1, self.X[l]) / 10
@@ -220,9 +223,9 @@ class MatrixGenerate():
                 for k in xrange(self.DimZ):
                     for l in xrange(self.natp):
                         if optionGrid == "C":
-                            result += "%f\t" % (self.gridCoulomb[i][j][k][l])
+                            result += "%g\t" % (self.gridCoulomb[i][j][k][l])
                         elif optionGrid == 'L':
-                            result += "%f\t" % (self.gridLJ[i][j][k][l])
+                            result += "%g\t" % (self.gridLJ[i][j][k][l])
                         else:
                             pass
         return result
