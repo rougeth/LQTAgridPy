@@ -19,21 +19,21 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
     metavar='<x> <y> <z>',
     type=int,
     nargs=3,
-    required=True,
+    required=False,
     help='Coordinates of the box.'
 )
 @click.option('--dimensions', '-d',
     metavar='<x> <y> <z>',
     type=int,
     nargs=3,
-    required=True,
+    required=False,
     help='Dimensions of the box.'
 )
 @click.option('--atom', '-a',
     metavar='[atom]',
     multiple=True,
     required=True,
-    help='Atom of proof.'
+    help='Probe.'
 )
 @click.option('--step', '-s',
     metavar='<x>',
@@ -42,22 +42,28 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
     required=True,
     help='Steps for navegation on matrix.'
 )
+@click.option('--output', '-o',
+    metavar='<path_output>',
+    type=click.Path(),
+    required=True,
+    help='Output matrix file.'
+)
 
-def run(mols, coordinates, dimensions, atom, step):
+def run(mols, coordinates, dimensions, atom, step,output):
     '''LQTAgridPy is a python version of LQTAgrid, a practical application of
-    4D analysis methodology developed at Universidade de Campinas.
+    4D QSAR analysis methodology developed at University of Campinas.
 
     More: https://github.com/rougeth/LQTAgridPy
     '''
-
+    
     grid = grid_generate.GridGenerate(
-        coordinates[0], coordinates[1], coordinates[2],
-        dimensions[0], dimensions[1], dimensions[2],
+        coordinates,
+        dimensions,
         atom,
         mols,
         step
     )
-    grid.saveGrid()
+    grid.saveGrid(output)
 
 
 if __name__ == '__main__':

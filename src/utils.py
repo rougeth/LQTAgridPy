@@ -17,3 +17,6 @@ def pairwise(iterable):
     a = iter(iterable)
     return izip(a, a)
 
+def triplewise(iterable):
+    a = iter(iterable)
+    return izip(a, a, a)

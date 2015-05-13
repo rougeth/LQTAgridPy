@@ -7,10 +7,10 @@ import utils
 
 class MatrixGenerate():
 
-    def __init__(self, fileGro, fileItp):
+    def __init__(self, fileGro, fileTop, fileItp):
         self.setX(fileGro)
-        self.atomsTypes(fileItp)
-        self.loadConstants()
+        self.atomsTypes(fileTop)
+        self.loadConstants(fileItp)
         self.loadAP()
         self.determineConstants()
 
@@ -49,12 +49,20 @@ class MatrixGenerate():
             currentLine += 1
 
         self.m = len(x)
-        self.X = [[0 for self.X in xrange(3)] for self.X in xrange(self.m)]
+        self.X = [[0 for self.X in range(3)] for self.X in range(self.m)]
 
-        for i in xrange(self.m):
+        self.minimos = [float(x[0]) * 10,float(y[0]) * 10,float(z[0]) * 10]
+        self.maximos = [float(x[0]) * 10,float(y[0]) * 10,float(z[0]) * 10]
+        for i in range(self.m):
             self.X[i][0] = float(x[i]) * 10
             self.X[i][1] = float(y[i]) * 10
             self.X[i][2] = float(z[i]) * 10
+            self.minimos[0] = min(self.minimos[0],self.X[i][0])
+            self.minimos[1] = min(self.minimos[1],self.X[i][1])
+            self.minimos[2] = min(self.minimos[2],self.X[i][2])
+            self.maximos[0] = max(self.maximos[0],self.X[i][0])
+            self.maximos[1] = max(self.maximos[1],self.X[i][1])
+            self.maximos[2] = max(self.maximos[2],self.X[i][2])
 
     def atomsTypes(self, fileName):
         with open(fileName) as f:
@@ -83,7 +91,7 @@ class MatrixGenerate():
 
         currentLine += 2
         line = input[currentLine]
-        for i in xrange(self.numberElements):
+        for i in range(self.numberElements):
             tokens = re.findall(r"[\w\.\-\+\[\]\;\n\=']+", line)
             currentToken = 1
             self.types.insert(i, tokens[currentToken])
@@ -92,17 +100,22 @@ class MatrixGenerate():
             currentLine += 1
             line = input[currentLine]
 
-    def loadConstants(self):
-        with open("defaultsFiles/ffcargasnb.itp") as f:
+    def loadConstants(self,fileName):
+        with open(fileName) as f:
             input = f.readlines()
 
         ttype = []
         sigma = []
         epsilon = []
-        currentLine = 1
+        currentLine = 0
         line = input[currentLine]
         index = 1
-
+        
+        while line != "[ atomtypes ]\n":
+            currentLine += 1
+            line = input[currentLine]        
+        currentLine += 1
+        
         while len(input) > currentLine +1:
             currentToken = 0
             currentLine += 1
@@ -120,7 +133,7 @@ class MatrixGenerate():
         self.constantc6 = []
         self.constantc12 = []
 
-        for i in xrange(nttypes):
+        for i in range(nttypes):
             self.typeConstants.insert(i, ttype[i])
 
             self.constantc6.insert(i, 4.0 * float(epsilon[i])
@@ -158,14 +171,14 @@ class MatrixGenerate():
     def search(self, vector, element):
         nElem = len(vector)
 
-        for i in xrange(nElem):
+        for i in range(nElem):
             if element == vector[i]:
                 return i
 
         return -1
 
     def determineConstants(self):
-        for i in xrange(self.numberElements):
+        for i in range(self.numberElements):
             index = self.search(self.typeConstants, self.types[i])
             self.c6.insert(i, self.constantc6[index])
             self.c12.insert(i, self.constantc12[index])
@@ -178,13 +191,13 @@ class MatrixGenerate():
 
         f = 138.935485
         nframes = self.m / self.numberElements
-        self.gridCoulomb = [[[[0 for x in xrange(self.natp)] for x in xrange(self.DimZ)]
-                            for x in xrange(self.DimY)] for x in xrange(self.DimX)]
+        self.gridCoulomb = [[[[0 for x in range(self.natp)] for x in range(self.DimZ)]
+                            for x in range(self.DimY)] for x in range(self.DimX)]
 
-        self.gridLJ = [[[[0 for x in xrange(self.natp)] for x in xrange(self.DimZ)]
-                        for x in xrange(self.DimY)] for x in xrange(self.DimX)]
+        self.gridLJ = [[[[0 for x in range(self.natp)] for x in range(self.DimZ)]
+                        for x in range(self.DimY)] for x in range(self.DimX)]
 
-        for h in xrange(self.natp):
+        for h in range(self.natp):
             elem = self.search(self.ap, atp[h])
             q1 = self.cargosap[elem]
             c6a = self.c6ap[elem]
@@ -195,16 +208,16 @@ class MatrixGenerate():
             #r1 = []
             r1 = [0.0,0.0,0.0]
             
-            for i in xrange(self.DimX):
+            for i in range(self.DimX):
                 r1[0] = i*step+x0
-                for j in xrange(self.DimY):
+                for j in range(self.DimY):
                     r1[1] = j*step+y0
-                    for k in xrange(self.DimZ):
+                    for k in range(self.DimZ):
                         r1[2] = k*step+z0
                         Vlj = 0
                         Vc = 0
                         npontos += 1
-                        for l in xrange(self.m):
+                        for l in range(self.m):
                             r = utils.Distance(r1, self.X[l]) / 10
                             index = l % self.numberElements
                             c6ij = math.sqrt(c6a * self.c6[index])
@@ -218,10 +231,10 @@ class MatrixGenerate():
 
     def getMatrix(self, optionGrid):
         result = ""
-        for i in xrange(self.DimX):
-            for j in xrange(self.DimY):
-                for k in xrange(self.DimZ):
-                    for l in xrange(self.natp):
+        for i in range(self.DimX):
+            for j in range(self.DimY):
+                for k in range(self.DimZ):
+                    for l in range(self.natp):
                         if optionGrid == "C":
                             result += "%g\t" % (self.gridCoulomb[i][j][k][l])
                         elif optionGrid == 'L':
