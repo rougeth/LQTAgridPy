@@ -5,6 +5,7 @@ import math
 import re
 import utils
 
+
 class MatrixGenerate():
 
     def __init__(self, fileGro, fileTop, fileItp):
@@ -34,7 +35,7 @@ class MatrixGenerate():
                 line = input[currentLine]
 
                 #tokens = re.findall(r"[\w\.']+", line)
-		tokens = line.split()
+                tokens = line.split()
                 x.insert(i, tokens[currentToken])
                 currentToken += 1
                 y.insert(i, tokens[currentToken])
@@ -52,18 +53,18 @@ class MatrixGenerate():
         self.m = len(x)
         self.X = [[0 for self.X in range(3)] for self.X in range(self.m)]
 
-        self.minimos = [float(x[0]) * 10,float(y[0]) * 10,float(z[0]) * 10]
-        self.maximos = [float(x[0]) * 10,float(y[0]) * 10,float(z[0]) * 10]
+        self.minimos = [float(x[0]) * 10, float(y[0]) * 10, float(z[0]) * 10]
+        self.maximos = [float(x[0]) * 10, float(y[0]) * 10, float(z[0]) * 10]
         for i in range(self.m):
             self.X[i][0] = float(x[i]) * 10
             self.X[i][1] = float(y[i]) * 10
             self.X[i][2] = float(z[i]) * 10
-            self.minimos[0] = min(self.minimos[0],self.X[i][0])
-            self.minimos[1] = min(self.minimos[1],self.X[i][1])
-            self.minimos[2] = min(self.minimos[2],self.X[i][2])
-            self.maximos[0] = max(self.maximos[0],self.X[i][0])
-            self.maximos[1] = max(self.maximos[1],self.X[i][1])
-            self.maximos[2] = max(self.maximos[2],self.X[i][2])
+            self.minimos[0] = min(self.minimos[0], self.X[i][0])
+            self.minimos[1] = min(self.minimos[1], self.X[i][1])
+            self.minimos[2] = min(self.minimos[2], self.X[i][2])
+            self.maximos[0] = max(self.maximos[0], self.X[i][0])
+            self.maximos[1] = max(self.maximos[1], self.X[i][1])
+            self.maximos[2] = max(self.maximos[2], self.X[i][2])
 
     def atomsTypes(self, fileName):
         with open(fileName) as f:
@@ -77,7 +78,7 @@ class MatrixGenerate():
 
         tokens = re.findall(r"[\w\.']+", line)
         token = ""
-        
+
         while token != "atoms":
             currentToken = 0
             currentLine += 1
@@ -101,7 +102,7 @@ class MatrixGenerate():
             currentLine += 1
             line = input[currentLine]
 
-    def loadConstants(self,fileName):
+    def loadConstants(self, fileName):
         with open(fileName) as f:
             input = f.readlines()
 
@@ -111,13 +112,13 @@ class MatrixGenerate():
         currentLine = 0
         line = input[currentLine]
         index = 1
-        
+
         while line != "[ atomtypes ]\n":
             currentLine += 1
-            line = input[currentLine]        
+            line = input[currentLine]
         currentLine += 1
-        
-        while len(input) > currentLine +1:
+
+        while len(input) > currentLine + 1:
             currentToken = 0
             currentLine += 1
             line = input[currentLine]
@@ -138,7 +139,7 @@ class MatrixGenerate():
             self.typeConstants.insert(i, ttype[i])
 
             self.constantc6.insert(i, 4.0 * float(epsilon[i])
-                                    * (float(sigma[i]) ** 6))
+                                   * (float(sigma[i]) ** 6))
             self.constantc12.insert(i, 4.0 * float(epsilon[i])
                                     * (float(sigma[i]) ** 12))
 
@@ -183,7 +184,7 @@ class MatrixGenerate():
             index = self.search(self.typeConstants, self.types[i])
             self.c6.insert(i, self.constantc6[index])
             self.c12.insert(i, self.constantc12[index])
-        
+
     def gridGenerate(self, dimX, dimY, dimZ, atp, x0, y0, z0, step):
         self.DimX = dimX
         self.DimY = dimY
@@ -193,12 +194,12 @@ class MatrixGenerate():
         f = 138.935485
         nframes = self.m / self.numberElements
         self.gridCoulomb = [[[[0 for x in range(self.natp)] for x in range(self.DimZ)]
-                            for x in range(self.DimY)] for x in range(self.DimX)]
+                             for x in range(self.DimY)] for x in range(self.DimX)]
 
         self.gridLJ = [[[[0 for x in range(self.natp)] for x in range(self.DimZ)]
                         for x in range(self.DimY)] for x in range(self.DimX)]
 
-        print("Dimensions %d X %d X %d\n" % (self.DimX,self.DimY,self.DimZ))
+        print("Dimensions %d X %d X %d\n" % (self.DimX, self.DimY, self.DimZ))
         for h in range(self.natp):
             elem = self.search(self.ap, atp[h])
             q1 = self.cargosap[elem]
@@ -208,15 +209,15 @@ class MatrixGenerate():
             Vc = 0
             npontos = 0
             #r1 = []
-            r1 = [0.0,0.0,0.0]
-	            
-	    print("Calculating %s probe\n" % atp[h])
+            r1 = [0.0, 0.0, 0.0]
+
+            print("Calculating %s probe\n" % atp[h])
             for i in range(self.DimX):
-                r1[0] = i*step+x0
+                r1[0] = i * step + x0
                 for j in range(self.DimY):
-                    r1[1] = j*step+y0
+                    r1[1] = j * step + y0
                     for k in range(self.DimZ):
-                        r1[2] = k*step+z0
+                        r1[2] = k * step + z0
                         Vlj = 0
                         Vc = 0
                         npontos += 1
@@ -226,12 +227,14 @@ class MatrixGenerate():
                             c6ij = math.sqrt(c6a * self.c6[index])
                             c12ij = math.sqrt(c12a * self.c12[index])
 
-			    if r != 0:
-                                Vlj = Vlj + (c12ij / (math.pow(r, 12))) - (c6ij / (math.pow(r, 6)))
-                                Vc = Vc + f * float(q1) * float(self.cargos[index]) / r
-			    else:
-			        Vlj = float("inf")
-				Vc = float("inf")
+                            if r != 0:
+                                Vlj = Vlj + (c12ij / (math.pow(r, 12))
+                                             ) - (c6ij / (math.pow(r, 6)))
+                                Vc = Vc + f * \
+                                    float(q1) * float(self.cargos[index]) / r
+                            else:
+                                Vlj = float("inf")
+                                Vc = float("inf")
 
                         self.gridCoulomb[i][j][k][h] = Vc / nframes
                         self.gridLJ[i][j][k][h] = Vlj / math.sqrt(nframes)
