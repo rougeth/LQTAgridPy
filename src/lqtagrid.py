@@ -11,46 +11,45 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.option('--mols',
-    metavar='<path>',
-    type=click.Path(exists=True),
-    required=True,
-    help='files path, gro and itp.'
-)
+              metavar='<path>',
+              type=click.Path(exists=True),
+              required=True,
+              help='files path, gro and itp.'
+              )
 @click.option('--coordinates', '-c',
-    metavar='<x> <y> <z>',
-    type=int,
-    nargs=3,
-    required=False,
-    help='Coordinates of the box.'
-)
+              metavar='<x> <y> <z>',
+              type=int,
+              nargs=3,
+              required=False,
+              help='Coordinates of the box.'
+              )
 @click.option('--dimensions', '-d',
-    metavar='<x> <y> <z>',
-    type=int,
-    nargs=3,
-    required=False,
-    help='Dimensions of the box.'
-)
+              metavar='<x> <y> <z>',
+              type=int,
+              nargs=3,
+              required=False,
+              help='Dimensions of the box.'
+              )
 @click.option('--atom', '-a',
-    metavar='[atom]',
-    multiple=True,
-    required=True,
-    help='Probe.'
-)
+              metavar='[atom]',
+              multiple=True,
+              required=True,
+              help='Probe.'
+              )
 @click.option('--step', '-s',
-    metavar='<x>',
-    type=float,
-    nargs=1,
-    required=True,
-    help='Steps for navegation on matrix.'
-)
+              metavar='<x>',
+              type=float,
+              nargs=1,
+              required=True,
+              help='Steps for navegation on matrix.'
+              )
 @click.option('--output', '-o',
-    metavar='<path_output>',
-    type=click.Path(),
-    required=True,
-    help='Output matrix file.'
-)
-
-def run(mols, coordinates, dimensions, atom, step,output):
+              metavar='<path_output>',
+              type=click.Path(),
+              required=True,
+              help='Output matrix file.'
+              )
+def run(mols, coordinates, dimensions, atom, step, output):
     '''LQTAgridPy is a python version of LQTAgrid, a practical application of
     4D QSAR analysis methodology developed at University of Campinas.
 

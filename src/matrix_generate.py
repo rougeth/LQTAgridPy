@@ -8,6 +8,7 @@ import utils
 #from . import utils
 from numpy import arange
 
+
 class MatrixGenerate():
 
     def __init__(self, fileGro, fileTop, fileItp):
@@ -57,18 +58,18 @@ class MatrixGenerate():
         # cria-se matriz com 3 linhas (uma para cada coordenada x,y e z) e as colunas como coordenadas
         self.X = [[0 for self.X in range(3)] for self.X in range(self.m)]
 
-        self.minimos = [float(x[0]) * 10,float(y[0]) * 10,float(z[0]) * 10]
-        self.maximos = [float(x[0]) * 10,float(y[0]) * 10,float(z[0]) * 10]
+        self.minimos = [float(x[0]) * 10, float(y[0]) * 10, float(z[0]) * 10]
+        self.maximos = [float(x[0]) * 10, float(y[0]) * 10, float(z[0]) * 10]
         for i in range(self.m):
             self.X[i][0] = float(x[i]) * 10
             self.X[i][1] = float(y[i]) * 10
             self.X[i][2] = float(z[i]) * 10
-            self.minimos[0] = min(self.minimos[0],self.X[i][0])
-            self.minimos[1] = min(self.minimos[1],self.X[i][1])
-            self.minimos[2] = min(self.minimos[2],self.X[i][2])
-            self.maximos[0] = max(self.maximos[0],self.X[i][0])
-            self.maximos[1] = max(self.maximos[1],self.X[i][1])
-            self.maximos[2] = max(self.maximos[2],self.X[i][2])
+            self.minimos[0] = min(self.minimos[0], self.X[i][0])
+            self.minimos[1] = min(self.minimos[1], self.X[i][1])
+            self.minimos[2] = min(self.minimos[2], self.X[i][2])
+            self.maximos[0] = max(self.maximos[0], self.X[i][0])
+            self.maximos[1] = max(self.maximos[1], self.X[i][1])
+            self.maximos[2] = max(self.maximos[2], self.X[i][2])
 
     def atomsTypes(self, fileName):
         with open(fileName) as f:
@@ -106,7 +107,7 @@ class MatrixGenerate():
             currentLine += 1
             line = input[currentLine]
 
-    def loadConstants(self,fileName):
+    def loadConstants(self, fileName):
         with open(fileName) as f:
             input = f.readlines()
 
@@ -143,7 +144,7 @@ class MatrixGenerate():
             self.typeConstants.insert(i, ttype[i]) # tipos de atomos
 
             self.constantc6.insert(i, 4.0 * float(epsilon[i])
-                                    * (float(sigma[i]) ** 6))
+                                   * (float(sigma[i]) ** 6))
             self.constantc12.insert(i, 4.0 * float(epsilon[i])
                                     * (float(sigma[i]) ** 12))
 

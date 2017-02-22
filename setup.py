@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='LQTAgridPy',
-    version='0.2',
+    version='0.4',
     description='Python version of LQTAgrid',
     author='Marco Rougeth, Mário Sérgio',
     author_email='marco@rougeth.com, sergio.mario_q@hotmail.com',
