@@ -3,6 +3,7 @@
 
 import click
 import grid_generate
+#from . import grid_generate
 
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
@@ -55,7 +56,6 @@ def run(mols, coordinates, dimensions, atom, step,output):
 
     More: https://github.com/rougeth/LQTAgridPy
     '''
-    
     grid = grid_generate.GridGenerate(
         coordinates,
         dimensions,
